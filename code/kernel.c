@@ -166,9 +166,9 @@ void kernel_main(uint64_t dtb_ptr32, uint64_t x1, uint64_t x2, uint64_t x3)
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 #endif
 {
-	// initialize UART for Raspi2
-	uart_init(2);
-	uart_puts("Hello, kernel World!\r\n");
+	// initialize UART for RASPBERRY_MODEL_VERSION, this number is injected via Makefile
+	uart_init(RASPBERRY_MODEL_VERSION);
+	uart_puts("Hello, kernel World!\n");
 
 	while (1) {
 		uart_putc(uart_getc());

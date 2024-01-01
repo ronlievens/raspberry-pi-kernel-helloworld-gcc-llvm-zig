@@ -12,10 +12,10 @@ build: compile
 	zig objcopy build/kernel-pi-4.elf -O binary build/kernel-pi-4.img
 
 compile: boot
-	zig cc -mcpu=arm1176jzf_s -target arm-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-0-1.o -O2 -Wall -Wextra
-	zig cc -mcpu=cortex_a7 -target arm-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-2.o -O2 -Wall -Wextra
-	zig cc -mcpu=cortex_a53 -target aarch64-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-3.o -O2 -Wall -Wextra
-	zig cc -mcpu=cortex_a72 -target aarch64-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-4.o -O2 -Wall -Wextra
+	zig cc -mcpu=arm1176jzf_s -target arm-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-0-1.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=1
+	zig cc -mcpu=cortex_a7 -target arm-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-2.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=2
+	zig cc -mcpu=cortex_a53 -target aarch64-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-3.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=3
+	zig cc -mcpu=cortex_a72 -target aarch64-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-4.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=4
 
 boot: clean
 	mkdir build
@@ -27,14 +27,14 @@ boot: clean
 clean:
 	rm -rf build
 
-qemu-pi-0:
+qemu-pi-0: build
 	qemu-system-arm -m 512 -M raspi0 -serial stdio -kernel build/kernel-pi-0-1.elf
 
-qemu-pi-1:
+qemu-pi-1: build
 	qemu-system-arm -m 512 -M raspi1ap -serial stdio -kernel build/kernel-pi-0-1.elf
 
-qemu-pi-2:
+qemu-pi-2: build
 	qemu-system-arm -m 1024 -M raspi2b -serial stdio -kernel build/kernel-pi-2.elf
 
-qemu-pi-3:
+qemu-pi-3: build
 	qemu-system-aarch64 -m 1024 -M raspi3b -serial stdio -kernel build/kernel-pi-3.elf
