@@ -42,4 +42,3 @@ run the code with `bmake qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
 
 The current issues in the project are:
 - qemu doesn't support the raspberry pi 4 (is coming soon)
-- qemu command for the pi 3 had flaky output (probably due multi cores running, not sure yet)

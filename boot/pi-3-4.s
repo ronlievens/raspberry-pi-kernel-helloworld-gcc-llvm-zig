@@ -14,6 +14,14 @@
 // x3 -> 0
 // x4 -> 32 bit kernel entry point, _start location
 _start:
+    // Shut off extra cores
+    mrs     x4, mpidr_el1
+    and     x4, x4, #3
+    cbz     x4, _init
+0:  wfe
+    b       0b
+
+_init:
     // set stack before our code
     ldr     x5, =_start
     mov     sp, x5
