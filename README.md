@@ -19,24 +19,24 @@ We use can use arm-gcc, llvm or the zig compiler and we emulate the Raspberry Pi
 To install the toolchain on Windows we will use [scoop](https://scoop.sh/):
 
 ```shell
-scoop install gcc-arm-none-eabi llvm zig zls extras/vcredist2022 qemu bmake
+scoop install gcc-arm-none-eabi llvm zig zls extras/vcredist2022 qemu make
 ```
 
 To install the toolchain on Macos we will use [brew](https://brew.sh/):
 
 ```shell
-brew install gcc-arm-embedded aarch64-elf-gcc aarch64-elf-binutils llvm zig zls qemu bmake
+brew install gcc-arm-embedded aarch64-elf-gcc aarch64-elf-binutils llvm zig zls qemu
 ```
 
 ## Building and running the kernel
-As the title suggest we can compile the code with gcc `cd gcc && bmake`,
-run the code with `bmake qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
+As the title suggest we can compile the code with gcc `cd gcc && make`,
+run the code with `make qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
 
-Or you can compile the code using llvm `cd llvm && bmake`,
-run the code with `bmake qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
+Or you can compile the code using llvm `cd llvm && make`,
+run the code with `make qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
 
-And as last compile the code using zig `cd zig && bmake`,
-run the code with `bmake qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
+And as last compile the code using zig `cd zig && make`,
+run the code with `make qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
 
 ## Issues
 
