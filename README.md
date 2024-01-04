@@ -42,3 +42,4 @@ run the code with `make qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
 
 The current issues in the project are:
 - qemu doesn't support the raspberry pi 4 (is coming soon)
+- gcc compile to aarch64 not working on Windows
