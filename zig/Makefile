@@ -1,28 +1,48 @@
+CC32=zig cc
+CC64=$(CC32)
+OBJCOPY32=zig objcopy
+OBJCOPY64=$(OBJCOPY32)
+CFLAGS=-fpic
+CPPFLAGS=-O2 -Wall -Wextra -nostdlib
+
+PLATFORM_32_BIT=-target arm-freestanding-eabi
+PLATFORM_64_BIT=-target aarch64-freestanding-eabi
+
+CPU_P1=-mcpu=arm1176jzf_s
+CPU_P2=-mcpu=cortex_a7
+CPU_P3=-mcpu=cortex_a53
+CPU_P4=-mcpu=cortex_a72
+CPU_P5=-mcpu=cortex_a76
+
 build: compile
-	zig cc -target arm-freestanding-eabi -T ../boot/linker.ld -o build/kernel-pi-0-1.elf -ffreestanding -O2 -nostdlib build/boot-pi-0-1.o build/kernel-pi-0-1.o
-	zig objcopy build/kernel-pi-0-1.elf -O binary build/kernel-pi-0-1.img
+	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-0-1.elf build/boot-pi-0-1.o build/kernel-pi-0-1.o $(CPPFLAGS)
+	$(OBJCOPY32) build/kernel-pi-0-1.elf -O binary build/kernel-pi-0-1.img
 
-	zig cc -target arm-freestanding-eabi -T ../boot/linker.ld -o build/kernel-pi-2.elf -ffreestanding -O2 -nostdlib build/boot-pi-2.o build/kernel-pi-2.o
-	zig objcopy build/kernel-pi-2.elf -O binary build/kernel-pi-2.img
+	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-2.elf  build/boot-pi-2.o build/kernel-pi-2.o $(CPPFLAGS)
+	$(OBJCOPY32) build/kernel-pi-2.elf -O binary build/kernel-pi-2.img
 
-	zig cc -target aarch64-freestanding-eabi -T ../boot/linker.ld -o build/kernel-pi-3.elf -ffreestanding -O2 -nostdlib build/boot-pi-3.o build/kernel-pi-3.o
-	zig objcopy build/kernel-pi-3.elf -O binary build/kernel-pi-3.img
+	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-3.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-3.o $(CPPFLAGS)
+	$(OBJCOPY64) build/kernel-pi-3.elf -O binary build/kernel-pi-3.img
 
-	zig cc -target aarch64-freestanding-eabi -T ../boot/linker.ld -o build/kernel-pi-4.elf -ffreestanding -O2 -nostdlib build/boot-pi-4.o build/kernel-pi-4.o
-	zig objcopy build/kernel-pi-4.elf -O binary build/kernel-pi-4.img
+	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-4.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-4.o $(CPPFLAGS)
+	$(OBJCOPY64) build/kernel-pi-4.elf -O binary build/kernel-pi-4.img
+
+	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-5.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-5.o $(CPPFLAGS)
+	$(OBJCOPY64) build/kernel-pi-4.elf -O binary build/kernel-pi-5.img
 
 compile: boot
-	zig cc -mcpu=arm1176jzf_s -target arm-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-0-1.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=1
-	zig cc -mcpu=cortex_a7 -target arm-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-2.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=2
-	zig cc -mcpu=cortex_a53 -target aarch64-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-3.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=3
-	zig cc -mcpu=cortex_a72 -target aarch64-freestanding-eabi -fpic -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-4.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=4
+	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-0-1.o -DRASPBERRY_MODEL_VERSION=1 $(CPPFLAGS)
+	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-2.o -DRASPBERRY_MODEL_VERSION=2 $(CPPFLAGS)
+	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-3.o -DRASPBERRY_MODEL_VERSION=3 $(CPPFLAGS)
+	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-4.o -DRASPBERRY_MODEL_VERSION=4 $(CPPFLAGS)
+	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-5.o -DRASPBERRY_MODEL_VERSION=5 $(CPPFLAGS)
 
 boot: clean
 	mkdir build
-	zig cc -mcpu=arm1176jzf_s -target arm-freestanding-eabi -fpic -c ../boot/pi-0-1.s -o build/boot-pi-0-1.o
-	zig cc -mcpu=cortex_a7 -target arm-freestanding-eabi -fpic -c ../boot/pi-2.s -o build/boot-pi-2.o
-	zig cc -mcpu=cortex_a53 -target aarch64-freestanding-eabi -fpic -c ../boot/pi-3-4.s -o build/boot-pi-3.o
-	zig cc -mcpu=cortex_a72 -target aarch64-freestanding-eabi -fpic -c ../boot/pi-3-4.s -o build/boot-pi-4.o
+	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -c ../boot/aarch32-multi-core.s -o build/boot-pi-0-1.o
+	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -c ../boot/aarch32-single-core.s -o build/boot-pi-2.o
+	$(CC64) $(PLATFORM_64_BIT) $(CFLAGS) -c ../boot/aarch64-single-core.s -o build/aarch64-single-core.o
+	$(CC64) $(PLATFORM_64_BIT) $(CFLAGS) -c ../boot/aarch64-multi-core.s -o build/aarch64-multi-core.o
 
 clean:
 	rm -rf build

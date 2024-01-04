@@ -1,36 +1,56 @@
+CC32=arm-none-eabi-gcc
+CC64=aarch64-elf-gcc
+OBJCOPY32=arm-none-eabi-objcopy
+OBJCOPY64=aarch64-elf-objcopy
+CFLAGS=-fpic -ffreestanding
+CPPFLAGS=-O2 -Wall -Wextra -nostdlib
+
+PLATFORM_32_BIT=
+PLATFORM_64_BIT=
+
+CPU_P1=-mcpu=arm1176jzf-s
+CPU_P2=-mcpu=cortex-a7
+CPU_P3=-mcpu=cortex-a53
+CPU_P4=-mcpu=cortex-a72
+CPU_P5=-mcpu=cortex-a76
+
 build: compile
-	arm-none-eabi-gcc -T ../boot/linker.ld -o build/kernel-pi-0-1.elf -ffreestanding -O2 -nostdlib build/boot-pi-0-1.o build/kernel-pi-0-1.o -lgcc
-	arm-none-eabi-objcopy build/kernel-pi-0-1.elf -O binary build/kernel-pi-0-1.img
+	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-0-1.elf build/boot-pi-0-1.o build/kernel-pi-0-1.o $(CPPFLAGS)
+	$(OBJCOPY32) build/kernel-pi-0-1.elf -O binary build/kernel-pi-0-1.img
 
-	arm-none-eabi-gcc -T ../boot/linker.ld -o build/kernel-pi-2.elf -ffreestanding -O2 -nostdlib build/boot-pi-2.o build/kernel-pi-2.o -lgcc
-	arm-none-eabi-objcopy build/kernel-pi-2.elf -O binary build/kernel-pi-2.img
+	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-2.elf  build/boot-pi-2.o build/kernel-pi-2.o $(CPPFLAGS)
+	$(OBJCOPY32) build/kernel-pi-2.elf -O binary build/kernel-pi-2.img
 ifneq ($(OS),Windows_NT)
-	aarch64-elf-gcc -T ../boot/linker.ld -o build/kernel-pi-3.elf -ffreestanding -O2 -nostdlib build/boot-pi-3.o build/kernel-pi-3.o -lgcc
-	aarch64-elf-objcopy build/kernel-pi-3.elf -O binary build/kernel-pi-3.img
+	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-3.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-3.o $(CPPFLAGS)
+	$(OBJCOPY64) build/kernel-pi-3.elf -O binary build/kernel-pi-3.img
 
-	aarch64-elf-gcc -T ../boot/linker.ld -o build/kernel-pi-4.elf -ffreestanding -O2 -nostdlib build/boot-pi-4.o build/kernel-pi-4.o -lgcc
-	aarch64-elf-objcopy build/kernel-pi-4.elf -O binary build/kernel-pi-4.img
+	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-4.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-4.o $(CPPFLAGS)
+	$(OBJCOPY64) build/kernel-pi-4.elf -O binary build/kernel-pi-4.img
+
+	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-5.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-5.o $(CPPFLAGS)
+	$(OBJCOPY64) build/kernel-pi-4.elf -O binary build/kernel-pi-5.img
 else
 	@echo Please use llvm or zig for aarch64 on Windows
 endif
 
 compile: boot
-	arm-none-eabi-gcc -mcpu=arm1176jzf-s -fpic -ffreestanding -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-0-1.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=1
-	arm-none-eabi-gcc -mcpu=cortex-a7 -fpic -ffreestanding -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-2.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=2
+	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-0-1.o -DRASPBERRY_MODEL_VERSION=1 $(CPPFLAGS)
+	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-2.o -DRASPBERRY_MODEL_VERSION=2 $(CPPFLAGS)
 ifneq ($(OS),Windows_NT)
-	aarch64-elf-gcc -mcpu=cortex-a53 -fpic -ffreestanding -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-3.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=3
-	aarch64-elf-gcc -mcpu=cortex-a72 -fpic -ffreestanding -std=gnu99 -c ../code/kernel.c -o build/kernel-pi-4.o -O2 -Wall -Wextra -DRASPBERRY_MODEL_VERSION=4
+	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-3.o -DRASPBERRY_MODEL_VERSION=3 $(CPPFLAGS)
+	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-4.o -DRASPBERRY_MODEL_VERSION=4 $(CPPFLAGS)
+	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-5.o -DRASPBERRY_MODEL_VERSION=5 $(CPPFLAGS)
 else
 	@echo Please use llvm or zig for aarch64 on Windows
 endif
 
 boot: clean
 	mkdir build
-	arm-none-eabi-gcc -mcpu=arm1176jzf-s -fpic -ffreestanding -c ../boot/pi-0-1.s -o build/boot-pi-0-1.o
-	arm-none-eabi-gcc -mcpu=cortex-a7 -fpic -ffreestanding -c ../boot/pi-2.s -o build/boot-pi-2.o
+	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -c ../boot/aarch32-multi-core.s -o build/boot-pi-0-1.o
+	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -c ../boot/aarch32-single-core.s -o build/boot-pi-2.o
 ifneq ($(OS),Windows_NT)
-	aarch64-elf-gcc -mcpu=cortex-a53 -fpic -ffreestanding -c ../boot/pi-3-4.s -o build/boot-pi-3.o
-	aarch64-elf-gcc -mcpu=cortex-a72 -fpic -ffreestanding -c ../boot/pi-3-4.s -o build/boot-pi-4.o
+	$(CC64) $(PLATFORM_64_BIT) $(CFLAGS) -c ../boot/aarch64-single-core.s -o build/aarch64-single-core.o
+	$(CC64) $(PLATFORM_64_BIT) $(CFLAGS) -c ../boot/aarch64-multi-core.s -o build/aarch64-multi-core.o
 else
 	@echo Please use llvm or zig for aarch64 on Windows
 endif
