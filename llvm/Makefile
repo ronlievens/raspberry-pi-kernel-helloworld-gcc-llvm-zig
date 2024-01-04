@@ -15,19 +15,19 @@ CPU_P4=-mcpu=cortex-a72
 CPU_P5=-mcpu=cortex-a76
 
 build: compile
-	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-0-1.elf build/boot-pi-0-1.o build/kernel-pi-0-1.o $(CPPFLAGS)
+	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker-aarch32.ld -o build/kernel-pi-0-1.elf build/boot-pi-0-1.o build/kernel-pi-0-1.o $(CPPFLAGS)
 	$(OBJCOPY32) build/kernel-pi-0-1.elf -O binary build/kernel-pi-0-1.img
 
-	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-2.elf  build/boot-pi-2.o build/kernel-pi-2.o $(CPPFLAGS)
+	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker-aarch32.ld -o build/kernel-pi-2.elf  build/boot-pi-2.o build/kernel-pi-2.o $(CPPFLAGS)
 	$(OBJCOPY32) build/kernel-pi-2.elf -O binary build/kernel-pi-2.img
 
-	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-3.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-3.o $(CPPFLAGS)
+	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker-aarch64.ld -o build/kernel-pi-3.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-3.o $(CPPFLAGS)
 	$(OBJCOPY64) build/kernel-pi-3.elf -O binary build/kernel-pi-3.img
 
-	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-4.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-4.o $(CPPFLAGS)
+	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker-aarch64.ld -o build/kernel-pi-4.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-4.o $(CPPFLAGS)
 	$(OBJCOPY64) build/kernel-pi-4.elf -O binary build/kernel-pi-4.img
 
-	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker.ld -o build/kernel-pi-5.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-5.o $(CPPFLAGS)
+	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -T ../boot/linker-aarch64.ld -o build/kernel-pi-5.elf -nostdlib build/aarch64-single-core.o build/kernel-pi-5.o $(CPPFLAGS)
 	$(OBJCOPY64) build/kernel-pi-4.elf -O binary build/kernel-pi-5.img
 
 compile: boot

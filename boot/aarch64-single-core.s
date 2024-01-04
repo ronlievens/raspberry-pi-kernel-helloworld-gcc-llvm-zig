@@ -34,9 +34,10 @@ _init:
     sub     w6, w6, #1
     cbnz    w6, 1b
 
-    // jump to C code, should not return
+// jump to C code, should not return
 2:  bl      kernel_main
-    // for failsafe, halt this core
+
+// for failsafe, halt this core
 halt:
     wfe
     b halt
