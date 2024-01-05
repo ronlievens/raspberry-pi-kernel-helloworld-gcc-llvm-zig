@@ -8,7 +8,9 @@ In this project we compile, build and emulate a hello world kernel for the Raspb
 - Raspberry Pi 3A+ (revision 1.0)
 - Raspberry Pi 3B (revision 1.2)
 
-This project is primary based on the guide from [osdev - Raspberry Pi Bare Bones](https://wiki.osdev.org/Raspberry_Pi_Bare_Bones)
+This project is primary based on the guides from:
+- [osdev - Raspberry Pi Bare Bones](https://wiki.osdev.org/Raspberry_Pi_Bare_Bones)
+- [osdev - Detecting Raspberry Pi Board](https://wiki.osdev.org/Detecting_Raspberry_Pi_Board)
 
 The Raspberry Pi 4 and 5 are not yet supported by QEMU emulator version 8.2.0.
 
