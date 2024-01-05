@@ -7,7 +7,7 @@
 // Make _start global.
 // ---------------------------------------------------------------------------------------------------------------------
 .globl _start
-        .org 0x8000       // set the program counter's offset for the specified section
+    .org 0x8000           // set the program counter's offset for the specified section
 
 _start:
     // -----------------------------------------------------------------------------------------------------------------
