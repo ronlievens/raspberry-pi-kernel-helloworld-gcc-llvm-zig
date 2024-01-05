@@ -40,9 +40,9 @@ compile: boot
 	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-0-1.o -DRASPBERRY_MODEL_VERSION=1 $(CPPFLAGS)
 	$(CC32) $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-2.o -DRASPBERRY_MODEL_VERSION=2 $(CPPFLAGS)
 ifneq ($(OS),Windows_NT)
-	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-3.o -DRASPBERRY_MODEL_VERSION=3 $(CPPFLAGS)
-	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-4.o -DRASPBERRY_MODEL_VERSION=4 $(CPPFLAGS)
-	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-5.o -DRASPBERRY_MODEL_VERSION=5 $(CPPFLAGS)
+	$(CC64) $(CPU_P3) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-3.o -DRASPBERRY_MODEL_VERSION=3 -DAARCH64 $(CPPFLAGS)
+	$(CC64) $(CPU_P4) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-4.o -DRASPBERRY_MODEL_VERSION=4 -DAARCH64 $(CPPFLAGS)
+	$(CC64) $(CPU_P5) $(PLATFORM_64_BIT) $(CFLAGS) -c ../code/kernel.c -o build/kernel-pi-5.o -DRASPBERRY_MODEL_VERSION=5 -DAARCH64 $(CPPFLAGS)
 else
 	@echo Please use llvm or zig for aarch64 on Windows
 endif
