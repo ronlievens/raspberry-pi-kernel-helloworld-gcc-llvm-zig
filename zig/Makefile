@@ -14,6 +14,9 @@ CPU_P3=-mcpu=cortex_a53
 CPU_P4=-mcpu=cortex_a72
 CPU_P5=-mcpu=cortex_a76
 
+# Specially for clion
+all: build
+
 build: compile
 	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -T ../boot/linker-aarch32.ld -o build/kernel-pi-0-1.elf build/boot-pi-0-1.o build/kernel-pi-0-1.o $(CPPFLAGS)
 	$(OBJCOPY32) build/kernel-pi-0-1.elf -O binary build/kernel-pi-0-1.img
