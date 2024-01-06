@@ -1,34 +1,29 @@
 # The Raspberry Pi Hello world kernel in gcc, llvm or zig
 
-In this project we compile, build and emulate a hello world kernel for the Raspberry Pi models:
+In this C project we compile, build and emulate a barebone (without an OS) hello world on all the Raspberry Pi models.
+This project is primary based on the guides and documentation from:
+- [Raspberry Pi Documentation](https://www.raspberrypi.com/documentation/computers/getting-started.html)
+- [osdev - Raspberry Pi Bare Bones](https://wiki.osdev.org/Raspberry_Pi_Bare_Bones)
+- [Processors - Raspberry Pi Documentation](https://www.raspberrypi.com/documentation/computers/processors.html)
 
-- Raspberry Pi Zero (revision 1.2)
-- Raspberry Pi A+ (revision 1.1)
-- Raspberry Pi 2B (revision 1.1)
-- Raspberry Pi 3A+ (revision 1.0)
-- Raspberry Pi 3B (revision 1.2)
 
-This project is primary based on the guide from [osdev - Raspberry Pi Bare Bones](https://wiki.osdev.org/Raspberry_Pi_Bare_Bones)
+## Set up the toolchain
+This project can be compiled with the C compilers of [arm-gcc](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads), [llvm](https://llvm.org) and [zig](https://ziglang.org).
+The emulation is done with [qemu](https://www.qemu.org).
 
-The Raspberry Pi 4 and 5 are not yet supported by QEMU emulator version 8.2.0.
-
-## Setup the toolchain
-
-We use can use arm-gcc, llvm or the zig compiler and we emulate the Raspberry Pi with qemu.
-
-To install the toolchain on Windows we will use [scoop](https://scoop.sh/):
+To install the toolchain on Windows we will use [scoop](https://scoop.sh):
 
 ```shell
 scoop install gcc-arm-none-eabi llvm zig zls extras/vcredist2022 qemu make
 ```
 
-To install the toolchain on Macos we will use [brew](https://brew.sh/):
+To install the toolchain on MacOs we will use [brew](https://brew.sh):
 
 ```shell
 brew install gcc-arm-embedded aarch64-elf-gcc aarch64-elf-binutils llvm zig zls qemu
 ```
 
-## Building and running the kernel
+## Building and running hello world
 As the title suggest we can compile the code with gcc `cd gcc && make`,
 run the code with `make qemu-pi-2` (or `qemu-pi-0`, `qemu-pi-1`, `qemu-pi-3`)
 
