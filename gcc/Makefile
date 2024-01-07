@@ -69,7 +69,7 @@ compile-pi-5: boot-64
 # ======================================================================================================================
 boot-64:
 ifneq ($(OS),Windows_NT)
-	if not exist build mkdir build
+	mkdir -p build
 	$(CC64) $(PLATFORM_64_BIT) $(CFLAGS) -c ../boot/aarch64-single-core.s -o build/aarch64-single-core.o
 	$(CC64) $(PLATFORM_64_BIT) $(CFLAGS) -c ../boot/aarch64-multi-core.s -o build/aarch64-multi-core.o
 else
@@ -77,7 +77,11 @@ else
 endif
 
 boot-32:
+ifneq ($(OS),Windows_NT)
+	mkdir -p build
+else
 	if not exist build mkdir build
+endif
 	$(CC32) $(CPU_P1) $(PLATFORM_32_BIT) $(CFLAGS) -c ../boot/aarch32-single-core.s -o build/aarch32-single-core.o
 	$(CC32)  $(CPU_P2) $(PLATFORM_32_BIT) $(CFLAGS) -c ../boot/aarch32-multi-core.s -o build/aarch32-multi-core.o
 
